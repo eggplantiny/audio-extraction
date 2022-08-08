@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+!packages/**/*.mp3
+!packages/**/*.mp4
+*.mp3

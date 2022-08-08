@@ -1,3 +1,5 @@
+import audioFile from './assets/audio/audio.mp3'
+
 interface AppProps {
   width: number
   height: number
@@ -12,6 +14,7 @@ class App {
   private root: HTMLElement
   private canvas: HTMLCanvasElement
   private context: CanvasRenderingContext2D
+  private audio: HTMLAudioElement
 
   private readonly width: number
   private readonly height: number
@@ -26,19 +29,20 @@ class App {
       throw new Error(`Could not find element with id ${rootElementId}`)
     this.root = el
 
-    const canvas = document.createElement('canvas')
-    this.canvas = canvas
+    this.canvas = document.createElement('canvas')
     this.canvas.width = width
     this.canvas.height = height
+    this.root.appendChild(this.canvas)
 
     const context = this.canvas.getContext('2d')
     if (context === null)
       throw new Error('Could not get context')
     this.context = context
 
-    this.root.appendChild(canvas)
-
-    this.setup()
+    this.audio = new Audio(audioFile)
+    const audioContext = new AudioContext()
+    const streamDestination = audioContext.createMediaStreamDestination()
+    const source = audioContext.createMediaStreamSource(this.audio.captureStream())
   }
 
   private setup() {
